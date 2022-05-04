@@ -280,96 +280,123 @@ $(document).ready(function () {
 
 <div id="TOC">
 <ul>
-<li><a href="#part-1-what-i-do-in-this-section">Part 1: What I do in this section?</a></li>
-<li><a href="#part-2-data-cleaning-and-feature-engineering">Part 2: Data Cleaning and Feature engineering</a></li>
-<li><a href="#part-3-the-prediction-of-score-q1">Part 3: The Prediction of Score (Q1)</a></li>
-<li><a href="#part-4-the-classification-of-follows-q2">Part 4: The Classification of Follows (Q2)</a></li>
-<li><a href="#part-5-code-source">Part 5: Code Source</a></li>
+<li><a href="#overview"><strong>1. Overview</strong></a></li>
+<li><a href="#data-cleaning-and-feature-engineering"><strong>2. Data Cleaning and Feature engineering</strong></a></li>
+<li><a href="#the-prediction-of-score-q1"><strong>3. The Prediction of Score (Q1)</strong></a></li>
+<li><a href="#the-classification-of-follows-q2"><strong>4. The Classification of Follows (Q2)</strong></a></li>
+<li><a href="#source"><strong>5. Source</strong></a></li>
 </ul>
 </div>
 
-<div id="part-1-what-i-do-in-this-section" class="section level2">
-<h2>Part 1: What I do in this section?</h2>
-<br>
+<div id="overview" class="section level2">
+<h2><strong>1. Overview</strong></h2>
 <p>
 There are many factors that make a comment popular or unpopular, like whether the comment is post by the submitter, whether the comment is positive, and when the comment post. It is interesting to use machine learning methods to answer the questions. <br><br> Overall, this part is aimed to explore the factors that affect the score (upvote and downvote) and follows of comments in Reddit. Specifically, one task is to predict the score, another one is to classify the comment based whether the comment is followed. <br> <br>Technically, for the score prediction task, linear regression, decision tree regression, and gradient-boosted trees model are used. For the classification of follow, logistic regression, random forest, and gradient-boosted trees model are used. All models except gradient-boosted trees are tuned with cross-validation.<br><br>From the result, we could find the gilds, awards, follows that the comment received influence the score of comments most. In this task, decision tree regression (CV) performs best (R square = 0.26). For another question, much more factors are significant for whether the comment is followed by others. Besides the factors mentioned above, whether the comment is posted by the submitter, whether the comment is sticked, whether the author is premium, and whether the comment is post on weekend are matters in this question.
 </p>
-<p><br> <br></p>
-</div>
-<div id="part-2-data-cleaning-and-feature-engineering" class="section level2">
-<h2>Part 2: Data Cleaning and Feature engineering</h2>
-<br>
-<p>
-First, 3 variables are transformed, including the weekend (0/1, depends on the post date of comments), the account days (2021-06-30 minus the date of author created), sentiment of the comment. <br><br> Second, all variables are converted to appropriate type. <br> <br>Third, NA and duplicate rows are removed. <br><br>Finally, cleaned data frame is stored into S3
-</p>
-<p><br> <br></p>
-</div>
-<div id="part-3-the-prediction-of-score-q1" class="section level2">
-<h2>Part 3: The Prediction of Score (Q1)</h2>
 <p><br></p>
-<div id="feature-selection" class="section level4">
-<h4>3.1 Feature Selection</h4>
-<br>
-<p>
-Put all variables into Linear regression model.<br><br> After running the pipeline model, coefficients show that there are 5 variables that affect the comments’ score most: <br>whether the comment is gilded<br>how many gilds that the comment received<br>total awards that the comment received<br>whether the comment is awarded<br>whether the comment is posted by the submitter<br><br>Therefore, the subset includes these 5 features and score are selected into a new dataset, and split it to train (0.9) and test set (0.1).
-</p>
-<p><br></p>
-<p><img src="coefficients1.png" /> <br></p>
 </div>
-<div id="model-selection" class="section level4">
-<h4>3.2 Model Selection</h4>
-<br>
+<div id="data-cleaning-and-feature-engineering" class="section level2">
+<h2><strong>2. Data Cleaning and Feature engineering</strong></h2>
 <p>
-5 models including linear regression, linear regression (CV), decision tree regression, decision tree regression (CV) and gradient-boosted trees model are trained. .<br><br> For convenience, pipeline models are used in these 5 models. <br><br>Specifically, cross-validation is used to do parameters tuning.<br><br>The RMSE and R2 of test set is used to evaluate the fitting result. <br><br>Also, models are saved into S3 after they are trained for better reuse, especially for cross-validation models.
+First, 3 variables are transformed, including the weekend (0/1, depends on the post date of comments), the account days (2021-06-30 minus the date of author created), sentiment of the comment. Second, all variables are converted to appropriate type. Third, NA and duplicate rows are removed. Finally, cleaned data frame is stored into S3
 </p>
 <p><br></p>
 </div>
-<div id="result" class="section level4">
-<h4>3.3 Result</h4>
-<br>
+<div id="the-prediction-of-score-q1" class="section level2">
+<h2><strong>3. The Prediction of Score (Q1)</strong></h2>
+<div id="feature-selection" class="section level5">
+<h5>3.1 Feature Selection</h5>
+<p align="center">
+<img src="coefficients1.png" />
+</p>
+<p align="center">
+<font size="3">Figure 1    Feature Importance in Score Prediction Model</font>
+</p>
+<p>
+Put all variables into Linear regression model. After running the pipeline model, coefficients show that there are 5 variables that affect the comments’ score most:
+</p>
+<ul>
+<li>whether the comment is gilded</li>
+<li>how many gilds that the comment received</li>
+<li>total awards that the comment received</li>
+<li>whether the comment is awarded</li>
+<li>whether the comment is posted by the submitter <br></li>
+</ul>
+<p>
+Therefore, the subset includes these 5 features and score are selected into a new dataset, and split it to train (0.9) and test set (0.1).
+</p>
+</div>
+<div id="model-selection" class="section level5">
+<h5>3.2 Model Selection</h5>
+<p>
+5 models including linear regression, linear regression (CV), decision tree regression, decision tree regression (CV) and gradient-boosted trees model are trained. For convenience, pipeline models are used in these 5 models. Specifically, cross-validation is used to do parameters tuning. The RMSE and R2 of test set is used to evaluate the fitting result. Also, models are saved into S3 after they are trained for better reuse, especially for cross-validation models.
+</p>
+</div>
+<div id="result" class="section level5">
+<h5>3.3 Result</h5>
+<p align="center">
+<img src="Prediction.png" />
+</p>
+<p align="center">
+<font size="3">Figure 2    Model Results for Score Prediction</font>
+</p>
 <p>
 In these 5 models, Decision Tree Regression (CV) model is the best with r2(0.261) and RMSE (42.816)
 </p>
 <p><br></p>
-<p><img src="Prediction.png" /></p>
-<p><br> <br></p>
 </div>
 </div>
-<div id="part-4-the-classification-of-follows-q2" class="section level2">
-<h2>Part 4: The Classification of Follows (Q2)</h2>
-<p><br></p>
-<div id="feature-selection-1" class="section level4">
-<h4>4.1 Feature Selection</h4>
-<br>
+<div id="the-classification-of-follows-q2" class="section level2">
+<h2><strong>4. The Classification of Follows (Q2)</strong></h2>
+<div id="feature-selection-1" class="section level5">
+<h5>4.1 Feature Selection</h5>
+<p align="center">
+<img src="coefficients2.png" />
+</p>
+<p align="center">
+<font size="3">Figure 3    Feature Importance in Follow Classification Model</font>
+</p>
 <p>
-Similarly, put all variables into Logistic regression model.<br><br> After running the pipeline model, coefficients show that there are 9 variables that affect the comments’ score significantly: <br>whether the comment is awarded, total awards that the comment received<br> whether the comment is gilded<br> how many gilds that the comment received<br> the score (upvotes) of the comment<br> whether the comment is posted by the submitter<br> whether the comment is sticked<br> whether the author is premium<br> whether the comment is post on weekend<br><br>Therefore, the subset includes these 9 features and score are selected into a new dataset, and split it to train (0.9) and test set (0.1).
+Similarly, put all variables into Logistic regression model. After running the pipeline model, coefficients show that there are 9 variables that affect the comments’ score significantly:
+</p>
+<ul>
+<li>whether the comment is awarded</li>
+<li>total awards that the comment received</li>
+<li>whether the comment is gilded</li>
+<li>how many gilds that the comment received</li>
+<li>the score (upvotes) of the comment</li>
+<li>whether the comment is posted by the submitter</li>
+<li>whether the comment is sticked</li>
+<li>whether the author is premium</li>
+<li>whether the comment is post on weekend <br></li>
+</ul>
+<p>
+Therefore, the subset includes these 9 features and score are selected into a new dataset, and split it to train (0.9) and test set (0.1).
+</p>
+</div>
+<div id="model-selection-1" class="section level5">
+<h5>4.2 Model Selection</h5>
+<p>
+5 classifers including logistic regression, logistic regression (CV), random forest, random forest (CV), and gradient-boosted trees model are trained. For convenience, pipeline models are used in these 5 models. <br><br>Specifically, cross-validation is used to do parameters tuning. The accuracy and AUC (area under the ROC curve) of test set is used to evaluate the fitting result because the label is imbalanced (more than 1200000 comments that not are followed, but about 550000 comments that are followed). Also, models are saved into S3 after they are trained for better reuse, especially for cross-validation models.
+</p>
+</div>
+<div id="result-1" class="section level5">
+<h5>4.3 Result</h5>
+<p align="center">
+<img src="Classification.png" />
+</p>
+<p align="center">
+<font size="3">Figure 2    Model Results for Follow Classification</font>
+</p>
+<p>
+In these 5 models, Gradient-Boosted Trees (GBT) model is the best with accuracy (0.877) and AUC (0.856).
 </p>
 <p><br></p>
-<p><img src="coefficients2.png" /></p>
-<p><br></p>
-</div>
-<div id="model-selection-1" class="section level4">
-<h4>4.2 Model Selection</h4>
-<br>
-<p>
-5 classifers including logistic regression, logistic regression (CV), random forest, random forest (CV), and gradient-boosted trees model are trained. .<br><br> For convenience, pipeline models are used in these 5 models. <br><br>Specifically, cross-validation is used to do parameters tuning.<br><br>The accuracy and AUC (area under the ROC curve) of test set is used to evaluate the fitting result because the label is imbalanced (more than 1200000 comments that not are followed, but about 550000 comments that are followed) <br><br>Also, models are saved into S3 after they are trained for better reuse, especially for cross-validation models.
-</p>
-<p><br></p>
-</div>
-<div id="result-1" class="section level4">
-<h4>4.3 Result</h4>
-<br>
-<p>
-In these 5 models, Gradient-Boosted Trees (GBT) model is the best with accuracy (0.877) and AUC (0.856)
-</p>
-<p><br></p>
-<p><img src="Classification.png" /></p>
-<p><br></p>
 </div>
 </div>
-<div id="part-5-code-source" class="section level2">
-<h2>Part 5: Code Source</h2>
-<p><br> <a href="Data_Cleaning.html">Data Cleaning and Feature Engineering</a> <br> <a href="ML1.html">Q1: The Prediction of Score</a> <br> <a href="ML2.html">Q2: The Classification of Follow</a> <br> <br> <br></p>
+<div id="source" class="section level2">
+<h2><strong>5. Source</strong></h2>
+<p><a href="Data_Cleaning.html">Data Cleaning and Feature Engineering</a> <br> <a href="ML1.html">Q1: The Prediction of Score</a> <br> <a href="ML2.html">Q2: The Classification of Follow</a> <br> <br></p>
 </div>
 
 <p>Copyright &copy; ZhibaoLi, Graduate of Data Science and Analytics, Georgetown University. All rights reserved.</p>

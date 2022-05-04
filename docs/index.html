@@ -285,20 +285,26 @@ $(document).ready(function () {
 
 <div id="TOC">
 <ul>
-<li><a href="#questions">Questions</a></li>
+<li><a href="#overview"><strong>1. Overview</strong></a></li>
+<li><a href="#business-goals-and-technical-proposals"><strong>2. Business Goals and Technical Proposals</strong></a></li>
+<li><a href="#preview-interesting-findings"><strong>3. Preview: interesting findings</strong></a></li>
 </ul>
 </div>
 
-<br>
+<div id="overview" class="section level2">
+<h2><strong>1. Overview</strong></h2>
 <p>
-In stock market, investor confidence in stocks leads to more buying activity, which can help to push prices higher. Stocks are an online community about stock investment with 14 years of history on Reddit. More than 3.7 million investors and traders gather there, where they have created plenty of comments and analysis, including advice for stocks, industry news, company discussion, etc. News, opinions, and suggestions from these discussions are real time, specific, and various, which would be useful for investors or traders to know what is happening in markets, and conduct actions based on information they get. Also, for beginners, it would help them to have a quick and better understanding of trading markets.<br><br> The data science project would extract key insights from the community by exploratory data analysis, NLP, and machine learning methods. Considering the data is tremendous and changing, big data tools like spark, s3, and hive would be applied. Specifically, valuable tips of stock trading including top 10 positive stocks and negative stocks talked will be demonstrated. Also, hot companies and industries investors care would be shown. In addition, factors that affect or predict votes and comments of a post would be analyzed. Finally, the analysis would be narrow down to a detailed analysis for some specific stocks like TESLA..<br> <br>In summary, the project would help investors or someone who is interested in stocks obtain practical investment tips, market information, and deep understanding for specific companies.
+In stock market, investor confidence in stocks leads to more buying activity, which can help to push prices higher. Stocks are an online community about stock investment with 14 years of history on Reddit. More than 3.7 million investors and traders gather there, where they have created plenty of comments and analysis, including advice for stocks, industry news, company discussion, etc. News, opinions, and suggestions from these discussions are real time, specific, and various, which would be useful for investors or traders to know what is happening in markets, and conduct actions based on information they get. Also, for beginners, it would help them to have a quick and better understanding of trading markets.<br><br> The data science project would extract key insights from the community by exploratory data analysis, natural language processing (NLP), and machine learning methods. Considering the dataset is tremendous (more than 2 million textual data), big data tools like Spark and S3 would be applied in this case. Generally, the project tasks would be divided into 2 parts. First part would be to gain some general insights about stock market from the stock subreddit comments. Second part is diving into the analysis of Tesla comments in this forum.<br><br> Specifically, hot companies and industries investors care would be shown. Meaningful words people mentioned most in this forum would be visualized in word cloud. Valuable tips of stock trading including top 10 positive stocks and negative stocks mentioned will be demonstrated. In addition, factors that affect or predict votes and comments of a post is planned to explore. Finally, the analysis would be narrow down to a detailed analysis for some specific stocks like TESLA.<br><br> In summary, the project would help investors or people who are interested in stocks obtain practical investment tips, market information, and deep understanding for specific companies.
 </p>
-<p><br> <br></p>
-<p><img src="subreddit_cover.png" width="75%" style="display: block; margin: auto;" /></p>
-<p><br> <br></p>
-<div id="questions" class="section level2">
-<h2>Questions</h2>
-<br>
+<p><br></p>
+<img src="subreddit_cover.png" width="75%" style="display: block; margin: auto;" />
+<p align="center">
+<font size="3">Figure 1    r/Stock Subreddit Website Screenshot</font>
+</p>
+<p><br></p>
+</div>
+<div id="business-goals-and-technical-proposals" class="section level2">
+<h2><strong>2. Business Goals and Technical Proposals</strong></h2>
 <p>
 Business Goal: Identification of top 10 stocks/companies mentioned in stocks subreddit. It would help investors know popular stocks/companies in stock market.<br>Technical proposal: Identify stock or stock ticker from each comment based on ApeWisdom stock detection method: <a href="https://apewisdom.io/methodology/" class="uri">https://apewisdom.io/methodology/</a>. Specifically, Tickers in a comment or submission if they are written in uppercase letters. For example: AMD, BTC, AAPL, or if they are preceded with a dollar sign. For example: $aapl, $AAPL, $btc. If a ticker is present two or more times in a submission or a comment this will still be counted as a single mention. After identifying the stock in each comment, aggregate them and present the top 10 stocks/companies and the market capital of these 10 companies.
 </p>
@@ -338,9 +344,40 @@ Business Goal: Exploratory Data Analysis for TESLA <br>Technical proposal: First
 <p>
 Business Goal: The Prediction for TESLA Stock Price <br>Technical proposal: Daily stock price up/down compared with the previous day would be the target label. Features may include daily total sentiment values of comments that mentioned TESLA, average text length of these comments, total number of gilds of these comments, total number of awards of these comments, counts of “buy” mentioned in comments, counts of “sell” mentioned in comments, the up/down of controversial comments percentage (compared with the controversial comments percentage of previous day), the number of parent_id, and weekday or weekend. Different classification models like logistic regression, random forest, and gradient-boosted trees model would be applied to train the model, and the best one would be selected based on fitting result. Present findings for top factors with important influence, and the prediction results (accuracy and AUC) of different models.
 </p>
-<p><br> <br></p>
-<p><img src="moving_stocks.gif" width="75%" style="display: block; margin: auto;" /></p>
-<p><br> <br></p>
+<p><br></p>
+</div>
+<div id="preview-interesting-findings" class="section level2">
+<h2><strong>3. Preview: interesting findings</strong></h2>
+<p>
+Have a look some interesting findings in this project!
+</p>
+<ul>
+<li>GME, and Tesla are mentioned most in these comments.</li>
+<li>In the top 10 mentioned stocks, there are 3 big name companies, Tesla, Apple, and Microsoft, while there are still 7 small companies with low market value, which may be the opportunities for investors.</li>
+<li>Popular industries mentioned are healthcare, Finance, Technology, and Consumer Service.</li>
+<li>most stocks mentioned in comments are in United States, followed by Canada, China, and Israel. <br></li>
+</ul>
+<p align="center">
+<img src="wordcloud1.png" style="width:75.0%" />
+</p>
+<p align="center">
+<font size="3">Figure 2    Word Cloud of Stock Subreddit Comments (based on counts)</font>
+</p>
+<p align="center">
+<iframe src="top20sentiments.html" height="405" width="800" style="border: 1px solid #464646;" allowfullscreen allow="autoplay" data-external="3">
+</iframe>
+</p>
+<p align="center">
+<font size="3">Figure 3    Sentiment Analysis for Top 20 stocks mentioned in Stock Subreddit</font>
+</p>
+<p align="center">
+<img src="te.svg" />
+</p>
+<p align="center">
+<font size="3">Figure 4    Sentiment and Stock Price Change for Tesla</font>
+</p>
+<p><br> <br> <img src="moving_stocks.gif" width="75%" style="display: block; margin: auto;" /></p>
+<p><br></p>
 </div>
 
 
